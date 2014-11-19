@@ -1,20 +1,27 @@
 #ifndef FAT_H
 #define FAT_H
 
-#define MAX_CLUSTER 65536
+#include "file.h"
+
+#define MAX_CLUSTER 65536   // unities
+#define CLUSTER_SIZE 32000U // bytes
 
 typedef struct cluster {
-    int index;
+    bool free = true;
+    unsigned int nextCluster;
 } cluster;
 
 class Fat
 {
 public:
     Fat();
+    void allocateFile(File *file);
 
-private:
-    cluster empty;
+//private:
     cluster table[MAX_CLUSTER];
+
+    unsigned int seekFreeCluster(unsigned int initial);
+
 };
 
 #endif //FAT_H

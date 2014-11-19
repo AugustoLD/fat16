@@ -1,17 +1,19 @@
 #ifndef DIRECTORY_TABLE_H
 #define DIRECTORY_TABLE_H
 
-#include <vector>
+#include <list>
 #include "file.h"
+#include "directory_table.h"
 
-class directory_table
+class DirectoryTable
 {
 public:
-    directory_table(bool is_root);
+    DirectoryTable(bool is_root);
 
 private:
     bool is_root;
-    vector<File> children;
+    list<File*> children;
+    DirectoryTable *father;
 };
 
 #endif // DIRECTORY_TABLE_H

@@ -21,24 +21,6 @@ void File::setFile_name_extension(const string &value)
 {
     file_name_extension = value;
 }
-string File::getFile_attributes() const
-{
-    return file_attributes;
-}
-
-void File::setFile_attributes(const string &value)
-{
-    file_attributes = value;
-}
-tm File::getCreated_date() const
-{
-    return created_date;
-}
-
-void File::setCreated_date(const tm &value)
-{
-    created_date = value;
-}
 int File::getStarting_cluster() const
 {
     return starting_cluster;
@@ -57,6 +39,26 @@ void File::setFile_size(unsigned int value)
 {
     file_size = value;
 }
+FileType File::getFile_type() const
+{
+    return file_type;
+}
+
+void File::setFile_type(const FileType &value)
+{
+    file_type = value;
+}
+date File::getCreation_date() const
+{
+    return creation_date;
+}
+
+void File::setCreation_date(const date &value)
+{
+    creation_date = value;
+}
+
+
 
 
 
