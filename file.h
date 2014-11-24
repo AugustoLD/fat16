@@ -3,17 +3,19 @@
 
 #include <string>
 #include <ctime>
+#include "directory_table.h"
 
-typedef struct tm date;
+typedef struct tm* date;
 
 using namespace std;
 
 typedef struct FileType {
-    bool readOnly;
-    bool hidden;
-    bool system;
-    bool directory;
+    bool readOnly = false;
+    bool hidden = false;
+    bool directory = false;
 } FileType;
+
+class DirectoryTable; //foward declaration
 
 class File
 {
@@ -38,6 +40,12 @@ public:
     date getCreation_date() const;
     void setCreation_date(const date &value);
 
+    DirectoryTable *getDirectoryTable() const;
+    void setDirectoryTable(DirectoryTable *value);
+
+    File *getParent() const;
+    void setParent(File *value);
+
 private:
     string file_name;
     string file_name_extension;
@@ -45,6 +53,8 @@ private:
     date creation_date;
     int starting_cluster;
     unsigned long file_size;
+    DirectoryTable *directoryTable;
+    File *parent;
 
 };
 

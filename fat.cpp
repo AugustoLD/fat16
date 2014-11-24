@@ -14,12 +14,14 @@ void Fat::allocateFile(File *file)
     }
 
     aux[0] = seekFreeCluster(0);
+    cout << aux[0] << endl;
     if(aux[0] == MAX_CLUSTER) {
         std::cout << "Error: unavaible cluster!" << std::endl;
         return;
     }
     for(unsigned int i = 1; i < cluster_count; i++) {
-        aux[i] = seekFreeCluster(aux[i-1]);
+        aux[i] = seekFreeCluster(aux[i-1]+1);
+        cout << aux[i] << endl;
         if(aux[i] == MAX_CLUSTER) {
             std::cout << "Error: unavaible cluster!" << std::endl;
             return;
@@ -32,7 +34,6 @@ void Fat::allocateFile(File *file)
         table[aux[i]].free = false;
     }
     table[aux[cluster_count-1]].nextCluster = MAX_CLUSTER;
-
 }
 
 unsigned int Fat::seekFreeCluster(unsigned int initial)

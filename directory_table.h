@@ -2,18 +2,25 @@
 #define DIRECTORY_TABLE_H
 
 #include <list>
+#include <string>
 #include "file.h"
 #include "directory_table.h"
+
+class File; //foward declaration
 
 class DirectoryTable
 {
 public:
-    DirectoryTable(bool is_root);
+    DirectoryTable();
+
+    std::list<File *> *getChildren() const;
+    void setChildren(std::list<File *> *value);
+
+    File *findFile(std::string fileName);
+    //std::string getPathName();
 
 private:
-    bool is_root;
-    list<File*> children;
-    DirectoryTable *father;
+    std::list<File *> *children;
 };
 
 #endif // DIRECTORY_TABLE_H

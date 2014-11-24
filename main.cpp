@@ -1,27 +1,63 @@
-#include <ctime>
 #include <iostream>
-#include <cstdlib>
+#include <fstream>
 #include <unistd.h>
 #include "fat.h"
 #include "file.h"
+#include "commands.h"
+#include "globals.h"
 
 using namespace std;
 
 int main()
 {
-    /*time_t t = time(0); // get time now
-    struct tm * now = localtime(& t);*/
 
-    Fat *fat = new Fat;
+    //truncate("/home/augusto/c++/disc.dat", MAX_CLUSTER*CLUSTER_SIZE);
 
-    File *file = new File;
+    /*  Iniciate root directory  */
+    File *rootDir = new File;
+    FileType rootType;
+    rootType.directory = true;
+    rootDir->setFile_type(rootType);
+    rootDir->setFile_name("/");
+    rootDir->setDirectoryTable(new DirectoryTable);
+    rootDir->setParent(NULL);
+    disc.open("/home/augusto/c++/disc.dat", ios::binary | ios::out | ios::in);
 
-    file->setFile_size(160000);
+    File **currentDir = &rootDir;
+    fat = new Fat;
 
-    fat->allocateFile(file);
-    for(int i = file->getStarting_cluster(); fat->table[i].nextCluster < MAX_CLUSTER ; i = fat->table[i].nextCluster) {
-        cout << i << endl;
-        usleep(1000000);
+    list<string> *command_args;
+
+    while(true) {
+        cout << "[" << (*currentDir)->getFile_name() << "] => ";
+
+        string input;
+        getline(std::cin, input);
+        command_args = commands::parseCommand(input);
+        input = command_args->front();
+        if(input.compare("mkdir") == 0) {
+            if(command_args->size() > 1) commands::mkdir(*currentDir, command_args->back());
+            else cout << "Missing directory name!" << endl;
+        } else if(input.compare("dir") == 0) {
+            commands::dir(*currentDir);
+        } else if(input.compare("cd") == 0) {
+            if(command_args->size() > 1) commands::cd(currentDir, command_args->back());
+            else cout << "Missing directory name!" << endl;
+        } else if(input.compare("cp") == 0) {
+            if(command_args->size() > 1) commands::cp(*currentDir, command_args->back());
+            else cout << "Missing arguments!" << endl;
+        } else if(input.compare("type") == 0) {
+            if(command_args->size() > 1) {
+                File *file;
+                file = (*currentDir)->getDirectoryTable()->findFile(command_args->back());
+                if(file == NULL) {
+                    cout << "File not found!" << endl;
+                } else {
+                    commands::type(file);
+                }
+            }
+        }
+
     }
 
     return 0;
