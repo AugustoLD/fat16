@@ -44,6 +44,14 @@ void commands::dir(File *currentDir)
     }
 }
 
+void commands::dirFile(File *file)
+{
+    std::cout << "File: " << file->getFile_name() << std::endl;
+    std::cout << "Size: " << file->getFile_size() << std::endl;
+    std::cout << "Creation Date: " << asctime(file->getCreation_date()) << std::endl;
+
+}
+
 void commands::cd(File **currentDir, string nextDir)
 {
     //string::compare returns 0 if equal
@@ -146,3 +154,5 @@ File *commands::startRoot()
 
     return rootDir;
 }
+
+

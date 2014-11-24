@@ -17,6 +17,8 @@ namespace commands
     void mkdir(File *currentDir, string dirName);
 
     void dir(File *currentDir);
+    void dirFile(File *file);
+
 
     void cd(File **currentDir, string nextDir);
 
