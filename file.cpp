@@ -3,6 +3,11 @@
 File::File()
 {
 }
+
+File::~File()
+{
+    if(directoryTable != NULL) delete directoryTable;
+}
 string File::getFile_name() const
 {
     return file_name;
@@ -75,12 +80,5 @@ void File::setParent(File *value)
 {
     parent = value;
 }
-
-
-
-
-
-
-
 
 

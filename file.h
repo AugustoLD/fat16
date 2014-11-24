@@ -21,6 +21,7 @@ class File
 {
 public:
     File();
+    ~File();
 
     string getFile_name() const;
     void setFile_name(const string &value);
@@ -55,7 +56,6 @@ private:
     unsigned long file_size;
     DirectoryTable *directoryTable;
     File *parent;
-
 };
 
 #endif // FILE_H

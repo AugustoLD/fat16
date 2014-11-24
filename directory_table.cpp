@@ -3,28 +3,33 @@
 
 DirectoryTable::DirectoryTable()
 {
-    children = new std::list<File*>;
+    children = new std::vector<File*>;
 }
-std::list<File *> *DirectoryTable::getChildren() const
-{
-    return children;
-}
-
-void DirectoryTable::setChildren(std::list<File *> *value)
-{
-    children = value;
-}
-
 File* DirectoryTable::findFile(string fileName)
 {
     File *temp;
-    for (std::list<File*>::iterator it=children->begin(); it!=children->end() ; ++it) {
-        temp = *it;
+    for(unsigned int i = 0; i < children->size(); i++) {
+        temp = children->at(i);
         if(temp->getFile_name().compare(fileName) == 0) {
             return temp;
         }
     }
     return NULL;
+}
+
+DirectoryTable::~DirectoryTable()
+{
+    delete children;
+}
+
+std::vector<File *> *DirectoryTable::getChildren() const
+{
+    return children;
+}
+
+void DirectoryTable::setChildren(std::vector<File *> *value)
+{
+    children = value;
 }
 
 /*

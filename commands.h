@@ -3,13 +3,16 @@
 
 #include <string>
 #include <fstream>
+#include <vector>
 #include "file.h"
 
 class File; //foward declaration
 
 namespace commands
 {
-    std::list<string>* parseCommand(string command);
+    std::vector<string>* parseCommand(string command);
+
+    File *startRoot();
 
     void mkdir(File *currentDir, string dirName);
 

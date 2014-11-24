@@ -8,6 +8,14 @@
 
 void commands::mkdir(File *currentDir, string dirName)
 {
+    File *temp;
+    for(unsigned int i = 0; i < currentDir->getDirectoryTable()->getChildren()->size(); i++) {
+        temp = currentDir->getDirectoryTable()->getChildren()->at(i);
+        if(dirName.compare(temp->getFile_name()) == 0) {
+            std::cout << "Directory already exists!" << std::endl;
+            return;
+        }
+    }
     File *newDir = new File;
     newDir->setFile_name(dirName);
     FileType fileType;
@@ -26,8 +34,8 @@ void commands::mkdir(File *currentDir, string dirName)
 void commands::dir(File *currentDir)
 {
     File *temp;
-    for (std::list<File*>::iterator it=currentDir->getDirectoryTable()->getChildren()->begin(); it!=currentDir->getDirectoryTable()->getChildren()->end() ; ++it) {
-        temp = *it;
+    for(unsigned int i = 0; i < currentDir->getDirectoryTable()->getChildren()->size(); i++) {
+        temp = currentDir->getDirectoryTable()->getChildren()->at(i);
         if(temp->getFile_type().directory) {
             std::cout << "<" << temp->getFile_name() << ">" << std::endl;
         } else {
@@ -47,8 +55,8 @@ void commands::cd(File **currentDir, string nextDir)
         }
     } else {
         File *temp;
-        for (std::list<File*>::iterator it=(*currentDir)->getDirectoryTable()->getChildren()->begin(); it!=(*currentDir)->getDirectoryTable()->getChildren()->end() ; ++it) {
-            temp = *it;
+        for(unsigned int i = 0; i < (*currentDir)->getDirectoryTable()->getChildren()->size(); i++) {
+            temp = (*currentDir)->getDirectoryTable()->getChildren()->at(i);
             if(temp->getFile_type().directory && !temp->getFile_name().compare(nextDir)) {
                 *currentDir = temp;
                 return;
@@ -58,9 +66,9 @@ void commands::cd(File **currentDir, string nextDir)
     }
 }
 
-std::list<string>* commands::parseCommand(string command)
+std::vector<string>* commands::parseCommand(string command)
 {
-    std::list<string> *tokens = new std::list<string>;
+    std::vector<string> *tokens = new std::vector<string>;
     string temp = "";
     for(unsigned int i = 0; i < command.length(); i++) {
         if(command.at(i) == ' ') {
@@ -74,7 +82,6 @@ std::list<string>* commands::parseCommand(string command)
     return tokens;
 }
 
-
 void commands::cp(File *currentDir, string fileName)
 {
     ifstream file;
@@ -84,6 +91,10 @@ void commands::cp(File *currentDir, string fileName)
         File *newFile = new File;
         newFile->setFile_size(file.tellg());
         newFile->setFile_name(fileName.substr(fileName.find_last_of('/')+1, 255));
+        time_t t = time(0); // get time now
+        date now = localtime(&t);
+        newFile->setCreation_date(now);
+
         currentDir->getDirectoryTable()->getChildren()->push_back(newFile);
 
         fat->allocateFile(newFile);
@@ -106,7 +117,6 @@ void commands::cp(File *currentDir, string fileName)
     }
 }
 
-
 void commands::type(File *file)
 {
     char *block;
@@ -120,4 +130,19 @@ void commands::type(File *file)
     disc.seekg(i*CLUSTER_SIZE, ios::beg);
     disc.read(block,CLUSTER_SIZE);
     std::cout << block << std::endl;
+}
+
+
+File *commands::startRoot()
+{
+    /*  Iniciate root directory  */
+    File *rootDir = new File;
+    FileType rootType;
+    rootType.directory = true;
+    rootDir->setFile_type(rootType);
+    rootDir->setFile_name("/");
+    rootDir->setDirectoryTable(new DirectoryTable);
+    rootDir->setParent(NULL);
+
+    return rootDir;
 }
