@@ -53,15 +53,6 @@ void File::setFile_type(const FileType &value)
 {
     file_type = value;
 }
-date File::getCreation_date() const
-{
-    return creation_date;
-}
-
-void File::setCreation_date(const date &value)
-{
-    creation_date = value;
-}
 DirectoryTable *File::getDirectoryTable() const
 {
     return directoryTable;
@@ -80,5 +71,15 @@ void File::setParent(File *value)
 {
     parent = value;
 }
+string File::getCreation_date() const
+{
+    return creation_date;
+}
+
+void File::setCreation_date(const string &value)
+{
+    creation_date = value;
+}
+
 
 

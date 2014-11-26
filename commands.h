@@ -23,8 +23,15 @@ namespace commands
     void cd(File **currentDir, string nextDir);
 
     void cp(File *currentDir, string fileName);
+    void cp(File *currenDir, string fileName, string newFileName);
+
+    void copyFile(File *currentDir, string fileName, string newFileName);
+
+    void copyFromFat(File *currentDir, string fileName, string newFileName);
 
     void type(File *file);
+
+    void help();
 };
 
 #endif // COMMANDS_H

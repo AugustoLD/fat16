@@ -13,6 +13,7 @@ typedef struct FileType {
     bool readOnly = false;
     bool hidden = false;
     bool directory = false;
+    bool root = false;
 } FileType;
 
 class DirectoryTable; //foward declaration
@@ -38,20 +39,20 @@ public:
     FileType getFile_type() const;
     void setFile_type(const FileType &value);
 
-    date getCreation_date() const;
-    void setCreation_date(const date &value);
-
     DirectoryTable *getDirectoryTable() const;
     void setDirectoryTable(DirectoryTable *value);
 
     File *getParent() const;
     void setParent(File *value);
 
+    string getCreation_date() const;
+    void setCreation_date(const string &value);
+
 private:
     string file_name;
     string file_name_extension;
     FileType file_type;
-    date creation_date;
+    string creation_date;
     int starting_cluster;
     unsigned long file_size;
     DirectoryTable *directoryTable;

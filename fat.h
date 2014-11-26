@@ -15,7 +15,7 @@ class Fat
 {
 public:
     Fat();
-    void allocateFile(File *file);
+    bool allocateFile(File *file);
 
 //private:
     cluster table[MAX_CLUSTER];
